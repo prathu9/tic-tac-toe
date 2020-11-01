@@ -1,8 +1,21 @@
+*{
+  margin:0;
+  box-sizing:border-box;
+}
+
+html{
+  width:100vw;
+  height:100vh;
+}
+
 body {
   font: 14px "Century Gothic", Futura, sans-serif;
-  margin: 20px;
   background: #000;
   color:#fff;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
 }
 
 ol, ul {
@@ -26,12 +39,12 @@ ol, ul {
   font-size: 24px;
   font-weight: bold;
   line-height: 34px;
-  height: 34px;
   margin-right: -1px;
   margin-top: -1px;
   padding: 0;
   text-align: center;
-  width: 34px;
+  width: 50px;
+  height: 50px;
   cursor:pointer;
 }
 
@@ -45,9 +58,20 @@ ol, ul {
 
 .game {
   display: flex;
-  flex-direction: row;
+  justify-content:center;
+  align-items:center;
+  flex-wrap:wrap;
+  width:100%;
+  min-width:320px;
 }
 
 .game-info {
   margin-left: 20px;
+}
+
+@media screen and (max-width:640px){
+  .game-info{
+    margin-top:20px;
+    margin-left: 0;
+  }
 }

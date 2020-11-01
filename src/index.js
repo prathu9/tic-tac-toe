@@ -91,6 +91,7 @@ class Board extends React.Component {
 
 class Game extends React.Component {
   render() {
+    alert("Work in progress");
     return (
       <div className="game">
         <div className="game-board">
