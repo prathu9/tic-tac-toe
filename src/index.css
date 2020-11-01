@@ -5,7 +5,7 @@
 
 html{
   width:100vw;
-  height:100vh;
+  min-height:100vh;
 }
 
 body {
@@ -15,7 +15,12 @@ body {
   display:flex;
   justify-content:center;
   align-items:center;
-  height:100vh;
+  min-height:100vh;
+}
+h1{
+  margin:40px;
+  text-align:center;
+
 }
 
 ol, ul {
@@ -59,14 +64,52 @@ ol, ul {
 .game {
   display: flex;
   justify-content:center;
-  align-items:center;
+  align-items:flex-start;
   flex-wrap:wrap;
   width:100%;
-  min-width:320px;
+  max-width:500px;
+  min-height:400px;
+}
+
+.game-board{
+  display:flex;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .game-info {
   margin-left: 20px;
+  overflow:auto;
+  min-width:320px;
+  min-height:180px;
+}
+
+.game-status{
+  margin:0 5px 10px 20px;
+  font-size:1.5rem;
+}
+
+.historyBtn{
+  width:120px;
+  height:30px;
+}
+
+.activeHistoryBtn{
+  width:130px;
+  height:30px;
+  font-weight:bold;
+} 
+
+.replayBtn{
+  margin:20px auto;
+  width:100px;
+  height:40px;
+  border:1px solid #fff;
+  border-radius:5px;
+  background-color: #2af;
+  outline:none;
+  cursor:pointer;
+  font-size:1rem;
 }
 
 @media screen and (max-width:640px){
