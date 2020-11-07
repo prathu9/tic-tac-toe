@@ -35,13 +35,14 @@ class Game extends React.Component {
 	      ],
 	      stepNumber:0,
 	      xisNext: true,
-	      moveDisplayed: false
+	      displayMove: false,
+
 	    };
   }
 
   showMove = ()=>{
   		this.setState({
-      		moveDisplayed: this.state.moveDisplayed?
+      		displayMove: this.state.displayMove?
                       false : true,
     })
   }
@@ -130,11 +131,11 @@ class Game extends React.Component {
             <div className="game-status">{status}</div>
             <Button className = "showHistoryBtn"
                     onClick = {this.showMove}
-                    value={this.state.moveDisplayed?
+                    value={this.state.displayMove?
                             "Hide Moves":
                             "Show Moves"}
             />
-            <ol className={this.state.moveDisplayed?
+            <ol className={this.state.displayMove?
                             "showHistory":
                             "hideHistory"}>
                 {moves}
