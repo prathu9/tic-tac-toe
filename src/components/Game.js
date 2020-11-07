@@ -36,7 +36,8 @@ class Game extends React.Component {
 	      stepNumber:0,
 	      xisNext: true,
 	      displayMove: false,
-
+	      computerTurn: false,
+	      computerMode: false
 	    };
   }
 
@@ -58,93 +59,162 @@ class Game extends React.Component {
         }
       ],
         stepNumber:0,
-        xisNext: true
-      });
+        xisNext: true,
+        computerTurn: false,
+       });
   }
 
   jumpTo = (step)=>{
       this.setState({
         stepNumber: step,
-        xisNext: (step%2)===0,
+        xisNext: (step%2)===0
       })
   }
 
+  componentDidUpdate(){
+  	if(this.state.computerMode){
+  		this.computerMove();
+  	}
+  }
+
+  changeMode = ()=>{
+  		this.setState({
+  			history:[
+		        {
+		          squares: [null,null,null,
+		                    null,null,null,
+		                    null,null,null]
+		        }
+		      ],
+		    stepNumber:0,
+		    xisNext: true,
+		    computerMode: !this.state.computerMode,
+		    computerTurn: false,
+		});
+		console.log(this.state.computerMode);
+  }
+
+  computerMove = ()=>{
+  		const computerTurn = this.state.computerTurn;
+  		if(computerTurn && this.state.computerMode){
+		    const history = this.state.history.slice(0, this.state.stepNumber+1);
+		    const current = history[history.length-1];
+		    const squares = current.squares.slice();
+		    const getRandNum = ()=>{
+		    	const randomNumber = Math.floor(Math.random()*(9-1+1))+1;
+		    	if(!squares[randomNumber]){
+		    		return randomNumber;
+		    	}
+		    	else{
+		    		if(!calculateWinner(squares)){
+		    			getRandNum();
+		    		}
+		    	}
+		    }
+		    const randomNum = getRandNum();
+		    if(!calculateWinner(squares) && !squares[randomNum]){
+		      squares[randomNum] = this.state.xisNext?"X":"O";
+		      this.setState({history:history.concat({
+		                        squares: squares
+		                    }),
+		                    stepNumber:history.length,
+		                    xisNext: !this.state.xisNext,
+		                    computerTurn: !computerTurn
+		                  });
+		    }
+  		}
+  }
+
   handleClick = (i)=>{
-	    const history = this.state.history.slice(0, this.state.stepNumber+1);
-	    const current = history[history.length-1];
-	    const squares = current.squares.slice();
-	    if(!calculateWinner(squares) && !squares[i]){
-	      squares[i] = this.state.xisNext?"X":"O";
-	      this.setState({history:history.concat({
-	                        squares: squares
-	                    }),
-	                    stepNumber:history.length,
-	                    xisNext: !this.state.xisNext,
-	                  });
-	    }
+	  	const computerTurn = this.state.computerMode? this.state.computerTurn:false;
+	  	console.log(this.state.computerMode);
+	  	if(!computerTurn){
+		    const history = this.state.history.slice(0, this.state.stepNumber+1);
+		    const current = history[history.length-1];
+		    const squares = current.squares.slice();
+		    if(!calculateWinner(squares) && !squares[i]){
+		      squares[i] = this.state.xisNext?"X":"O";
+		      this.setState({history:history.concat({
+		                        squares: squares
+		                    }),
+		                    stepNumber:history.length,
+		                    xisNext: !this.state.xisNext,
+		                    computerTurn: !computerTurn,
+		                  });
+		    }
+		}
   }
 
   render() {
-    const history = this.state.history;
-    const current = history[this.state.stepNumber];
-    const winner = calculateWinner(current.squares);
-    let status;
-    if(winner){
-        status = <span>{winner} is winner!! &#129395; &#x1F389; &#x1F389; &#x1F389;</span>;
-    } else if(current.squares.length===this.state.stepNumber){
-        status = `Draw`;
-    }
-    else{
-        status = `Next Player: ${this.state.xisNext?"X":"O"}`;
-    }
+	    const history = this.state.history;
+	    const current = history[this.state.stepNumber];
+	    const winner = calculateWinner(current.squares);
+	    let status;
+	    if(winner){
+	        status = <span>{winner} is winner!! &#129395; &#x1F389; &#x1F389; &#x1F389;</span>;
+	    } else if(current.squares.length===this.state.stepNumber){
+	        status = `Draw`;
+	    }
+	    else{
+	        status = `Next Player: ${this.state.xisNext?"X":"O"}`;
+	    }
 
-    const moves = history.map((step, move)=>{
-                      const desc = move?
-                                   move===this.state.stepNumber?`Move #${move}`:
-                                   `Go to move #${move}`:
-                                   `Go to game start`;
-                      return (<li key={move}>
-                                  <Button 
-                                      className = {move===this.state.stepNumber?
-                                              "activeHistoryBtn":"historyBtn"}
-                                      onClick = {()=>{this.jumpTo(move)}}
-                                      value = {desc}
-                                  />
-                              </li>);
-                  });
+	    const moves = history.map((step, move)=>{
+	                      const desc = move?
+	                                   move===this.state.stepNumber?`Move #${move}`:
+	                                   `Go to move #${move}`:
+	                                   `Go to game start`;
+	                      return (<li key={move}>
+	                                  <Button 
+	                                      className = {move===this.state.stepNumber?
+	                                              "activeHistoryBtn":"historyBtn"}
+	                                      onClick = {()=>{this.jumpTo(move)}}
+	                                      value = {desc}
+	                                  />
+	                              </li>);
+	                  });
 
-    return (
-      <>
-        <h1>Tic-Tac-Toe</h1>
-        <div className="game">
-          <div className="game-board">
-            <Board
-                onClick = {(i)=>{this.handleClick(i)}}
-                squares = {current.squares} 
-            />
-            <Button className = "replayBtn"
-                    onClick = {this.restartGame}
-                    value = "Replay"
-            />
-          </div>
-          <div className="game-info">
-            <div className="game-status">{status}</div>
-            <Button className = "showHistoryBtn"
-                    onClick = {this.showMove}
-                    value={this.state.displayMove?
-                            "Hide Moves":
-                            "Show Moves"}
-            />
-            <ol className={this.state.displayMove?
-                            "showHistory":
-                            "hideHistory"}>
-                {moves}
-            </ol>
-          </div>
-        </div>
-      </>
-    );
-  }
+	    return (
+	      <>
+	        <h1>Tic-Tac-Toe</h1>
+	        <div className="game">
+	          <div className="game-board">
+	            <Board
+	                onClick = {(i)=>{this.handleClick(i)}}
+	                squares = {current.squares} 
+	            />
+	            <Button className = "replayBtn"
+	                    onClick = {this.restartGame}
+	                    value = "Replay"
+	            />
+	            <Button className = "changeModeBtn"
+	          				onClick = {this.changeMode}
+	          				value = {!this.state.computerMode?
+	          						"Computer Mode":
+	          						"Singleplayer"}
+	          	/>
+	          </div>
+	          <div className="game-info">
+	            <div className="game-status">{status}</div>
+	            <Button className = "showHistoryBtn"
+	                    onClick = {this.showMove}
+	                    value={this.state.displayMove?
+	                            "Hide Moves":
+	                            "Show Moves"}
+	            />
+	            <ol className={this.state.displayMove?
+	                            "showHistory":
+	                            "hideHistory"}>
+	                {moves}
+	            </ol>
+	          </div>
+	          <div className="change-mode-container">
+	          		
+	          </div>
+	        </div>
+	      </>
+	    );
+	  }
 }
 
 export default Game;
