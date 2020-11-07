@@ -22,13 +22,22 @@ const calculateWinner = (squares)=>{
   return null;
 }
 
-const Square = (props)=>{
-    return (
-      <button className="square" 
-      		  onClick = {props.onClick}
+const Button = (props)=>{
+  return(
+      <button className = {props.className}
+            onClick = {props.onClick}
       >
         {props.value}
       </button>
+  );
+}
+
+const Square = (props)=>{
+    return (
+        <Button className = "square"
+                onClick = {props.onClick}
+                value = {props.value}
+        />
     );
 }
 
@@ -76,12 +85,27 @@ class Game extends React.Component {
         }
       ],
       stepNumber:0,
-      xisNext: true
+      xisNext: true,
+      moveDisplayed: false
     };
+  }
+
+  showMove = ()=>{
+    this.setState({
+      moveDisplayed: this.state.moveDisplayed?
+                      false : true,
+    })
   }
 
   restartGame = ()=>{
       this.setState({
+        history:[
+        {
+          squares: [null,null,null,
+                    null,null,null,
+                    null,null,null]
+        }
+      ],
         stepNumber:0,
         xisNext: true
       });
@@ -110,6 +134,7 @@ class Game extends React.Component {
   }
 
   render() {
+    console.log(this.state.moveDisplayed);
     const history = this.state.history;
     const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
@@ -129,11 +154,12 @@ class Game extends React.Component {
                                    `Go to move #${move}`:
                                    `Go to game start`;
                       return (<li key={move}>
-                                  <button 
+                                  <Button 
                                       className = {move===this.state.stepNumber?
                                               "activeHistoryBtn":"historyBtn"}
                                       onClick = {()=>{this.jumpTo(move)}}
-                                  >{desc}</button>
+                                      value = {desc}
+                                  />
                               </li>);
 
                   });
@@ -147,16 +173,24 @@ class Game extends React.Component {
                 onClick = {(i)=>{this.handleClick(i)}}
                 squares = {current.squares} 
             />
-            <button 
-              className="replayBtn"
-              onClick = {this.restartGame}
-            >
-                Replay
-            </button> 
+            <Button className = "replayBtn"
+                    onClick = {this.restartGame}
+                    value = "Replay"
+            />
           </div>
           <div className="game-info">
             <div className="game-status">{status}</div>
-            <ol>{moves}</ol>
+            <Button className = "showHistoryBtn"
+                    onClick = {this.showMove}
+                    value={this.state.moveDisplayed?
+                            "Hide Moves":
+                            "Show Moves"}
+            />
+            <ol className={this.state.moveDisplayed?
+                            "showHistory":
+                            "hideHistory"}>
+                {moves}
+            </ol>
           </div>
         </div>
       </>

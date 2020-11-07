@@ -67,6 +67,7 @@ ol, ul {
   align-items:flex-start;
   flex-wrap:wrap;
   width:100%;
+  padding-left:30px;
   max-width:500px;
   min-height:400px;
 }
@@ -80,25 +81,36 @@ ol, ul {
 .game-info {
   margin-left: 20px;
   overflow:auto;
-  min-width:320px;
+  min-width:300px;
   min-height:180px;
 }
 
 .game-status{
-  margin:0 5px 10px 20px;
+  margin:0 5px 10px 10px;
   font-size:1.5rem;
 }
 
-.historyBtn{
+.showHistory{
+  display:block;
+}
+
+.hideHistory{
+  display:none;
+}
+
+.showHistoryBtn{
+  display:block;
+  margin:10px 0 10px 30px;
   width:120px;
   height:30px;
+  cursor:pointer;
 }
 
 .activeHistoryBtn{
   width:130px;
   height:30px;
   font-weight:bold;
-} 
+}
 
 .replayBtn{
   margin:20px auto;
@@ -113,6 +125,10 @@ ol, ul {
 }
 
 @media screen and (max-width:640px){
+  .game{
+    padding-left:0;
+  }
+
   .game-info{
     margin-top:20px;
     margin-left: 0;
