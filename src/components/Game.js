@@ -126,12 +126,11 @@ class Game extends React.Component {
 			    let results = 0;
 			    let b = () => results = Math.floor(Math.random() * squares.length+1);
 			    if (!winner) {
-			        while (squares[results]) {b()}
+			        while (squares[results] || results===9) {b()}
 			        return results;
 			    }
 			}
 		    const randomNum = getRandNum();
-		    console.log("before",squares);
 		    if(!winner){
 		      squares[randomNum] = this.state.xisNext?"X":"O";
 		      this.setState({history:history.concat({
@@ -142,7 +141,6 @@ class Game extends React.Component {
 		                    computerTurn: !computerTurn
 		                  });
 		    }
-		    console.log("After",squares);
   		}
   }
 
