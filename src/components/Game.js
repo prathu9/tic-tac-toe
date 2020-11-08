@@ -91,7 +91,6 @@ class Game extends React.Component {
 		    computerMode: !this.state.computerMode,
 		    computerTurn: false,
 		});
-		console.log(this.state.computerMode);
   }
 
   computerMove = ()=>{
@@ -100,19 +99,20 @@ class Game extends React.Component {
 		    const history = this.state.history.slice(0, this.state.stepNumber+1);
 		    const current = history[history.length-1];
 		    const squares = current.squares.slice();
+		    const winner = calculateWinner(squares);
 		    const getRandNum = ()=>{
-		    	const randomNumber = Math.floor(Math.random()*(9-1+1))+1;
-		    	if(!squares[randomNumber]){
-		    		return randomNumber;
-		    	}
-		    	else{
-		    		if(!calculateWinner(squares)){
-		    			getRandNum();
+		    	if(!winner){
+		    		const randomNumber = Math.floor(Math.random()*(8-0+1))+0;
+		    		if(!squares[randomNumber]){
+		    			console.log("Random Index:"+randomNumber);
+		    			return randomNumber;
 		    		}
+		    		getRandNum();
 		    	}
 		    }
 		    const randomNum = getRandNum();
-		    if(!calculateWinner(squares) && !squares[randomNum]){
+		    console.log("before",squares);
+		    if(!winner){
 		      squares[randomNum] = this.state.xisNext?"X":"O";
 		      this.setState({history:history.concat({
 		                        squares: squares
@@ -122,12 +122,12 @@ class Game extends React.Component {
 		                    computerTurn: !computerTurn
 		                  });
 		    }
+		    console.log("After",squares);
   		}
   }
 
   handleClick = (i)=>{
 	  	const computerTurn = this.state.computerMode? this.state.computerTurn:false;
-	  	console.log(this.state.computerMode);
 	  	if(!computerTurn){
 		    const history = this.state.history.slice(0, this.state.stepNumber+1);
 		    const current = history[history.length-1];
@@ -191,7 +191,7 @@ class Game extends React.Component {
 	          				onClick = {this.changeMode}
 	          				value = {!this.state.computerMode?
 	          						"Computer Mode":
-	          						"Singleplayer"}
+	          						"Multiplayer"}
 	          	/>
 	          </div>
 	          <div className="game-info">
