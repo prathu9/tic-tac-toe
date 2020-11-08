@@ -100,16 +100,36 @@ class Game extends React.Component {
 		    const current = history[history.length-1];
 		    const squares = current.squares.slice();
 		    const winner = calculateWinner(squares);
-		    const getRandNum = ()=>{
-		    	if(!winner){
-		    		const randomNumber = Math.floor(Math.random()*(8-0+1))+0;
-		    		if(!squares[randomNumber]){
-		    			console.log("Random Index:"+randomNumber);
-		    			return randomNumber;
-		    		}
-		    		getRandNum();
-		    	}
-		    }
+		    // const getRandNum = ()=>{
+		    // 	if(!winner){
+		    // 		const randomNumber = Math.floor(Math.random()*(8-0+1))+0;
+		    // 		if(!squares[randomNumber]){
+		    // 			console.log("Random Index:"+randomNumber);
+		    // 			return randomNumber;
+		    // 		}
+		    // 		return getRandNum();
+		    // 	}
+		    // }
+		 //    const getRandNum = () => {
+			//     let results = 0;
+			//     if (!winner) {
+			//         const a = Math.floor(Math.random() * squares.length);
+			//         if (squares[a]) {
+			//             results = getRandNum();
+			//         } else {
+			//             results = a
+			//         }
+			//         return results;
+			//     }
+			// }
+			const getRandNum = () => {
+			    let results = 0;
+			    let b = () => results = Math.floor(Math.random() * squares.length+1);
+			    if (!winner) {
+			        while (squares[results]) {b()}
+			        return results;
+			    }
+			}
 		    const randomNum = getRandNum();
 		    console.log("before",squares);
 		    if(!winner){
