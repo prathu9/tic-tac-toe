@@ -201,16 +201,18 @@ class Game extends React.Component {
 	                onClick = {(i)=>{this.handleClick(i)}}
 	                squares = {current.squares} 
 	            />
-	            <Button className = "replayBtn"
-	                    onClick = {this.restartGame}
-	                    value = "Replay"
-	            />
-	            <Button className = "changeModeBtn"
-	          				onClick = {this.changeMode}
-	          				value = {!this.state.computerMode?
-	          						"Computer Mode":
-	          						"Multiplayer"}
-	          	/>
+	            <div className = "game-control-btn">
+		            <Button className = "replayBtn"
+		                    onClick = {this.restartGame}
+		                    value = "Replay"
+		            />
+		            <Button className = "changeModeBtn"
+		          				onClick = {this.changeMode}
+		          				value = {!this.state.computerMode?
+		          						"Computer Mode":
+		          						"Multiplayer"}
+		          	/>
+		        </div>
 	          </div>
 	          <div className="game-info">
 	            <div className="game-status">{status}</div>
