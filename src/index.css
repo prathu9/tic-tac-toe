@@ -103,6 +103,7 @@ ol, ul {
 
 .game-info {
   margin-left: 20px;
+  padding-top:40px;
   overflow:auto;
   min-width:300px;
   min-height:180px;
@@ -123,7 +124,7 @@ ol, ul {
 
 .showHistoryBtn{
   display:block;
-  margin:50px 0 10px 30px;
+  margin:40px 0 10px 30px;
   width:120px;
   height:30px;
   cursor:pointer;
@@ -185,5 +186,9 @@ ol, ul {
   .game-board,
   .game-info{
     margin-top:80px;
+  }
+
+  .game-info {
+    padding-top:0;
   }
 }
