@@ -22,15 +22,38 @@ const calculateWinner = (squares)=>{
   return null;
 }
 
+// const checkAvailableSpot = (squares)=>{
+// 	const availSpot = [];
+//   		squares.forEach((elem, index)=>{
+//   			if(!elem){
+//   				availSpot.push(index);
+//   			}
+//   		});
+//   		return availSpot;
+// }
+
+const getRandNum = (squares) => {
+	let results = 0;
+	let b = () => results = Math.floor(Math.random() * squares.length+1);
+	if (!calculateWinner(squares)) {
+	    while (squares[results] || results===9) {b()}
+	    return results;
+	}
+}
+
+// const minmax = (squares, player)=>{
+	
+// }
+
 class Game extends React.Component {
   constructor(props){
 	    super(props);
 	    this.state = {
 	      history:[
 	        {
-	          squares: [null,null,null,
-	                    null,null,null,
-	                    null,null,null]
+	           squares: [null,null,null,
+		                 null,null,null,
+		                 null,null,null]
 	        }
 	      ],
 	      stepNumber:0,
@@ -53,9 +76,9 @@ class Game extends React.Component {
       this.setState({
         history:[
         {
-          squares: [null,null,null,
-                    null,null,null,
-                    null,null,null]
+           squares: [null,null,null,
+		             null,null,null,
+		             null,null,null]
         }
       ],
         stepNumber:0,
@@ -93,6 +116,11 @@ class Game extends React.Component {
 		});
   }
 
+  bestMove = (squares) => {
+		// return minmax(squares, "O").index;
+		return getRandNum(squares);
+	}
+
   computerMove = ()=>{
   		const computerTurn = this.state.computerTurn;
   		if(computerTurn && this.state.computerMode){
@@ -122,15 +150,16 @@ class Game extends React.Component {
 			//         return results;
 			//     }
 			// }
-			const getRandNum = () => {
-			    let results = 0;
-			    let b = () => results = Math.floor(Math.random() * squares.length+1);
-			    if (!winner) {
-			        while (squares[results] || results===9) {b()}
-			        return results;
-			    }
-			}
-		    const randomNum = getRandNum();
+			// const getRandNum = () => {
+			//     let results = 0;
+			//     let b = () => results = Math.floor(Math.random() * squares.length+1);
+			//     if (!winner) {
+			//         while (squares[results] || results===9) {b()}
+			//         return results;
+			//     }
+			// }
+		    const randomNum = this.bestMove(squares.slice());
+		    // console.log(randomNum);
 		    if(!winner){
 		      squares[randomNum] = this.state.xisNext?"X":"O";
 		      this.setState({history:history.concat({
